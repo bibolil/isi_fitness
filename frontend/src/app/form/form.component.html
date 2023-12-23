@@ -1,0 +1,234 @@
+
+<div class="spinner-border text-primary" style="position:absolute;top:50%;left:50%" role="status" *ngIf="loading">
+  <span class="sr-only">Loading...</span>
+</div>
+<div *ngIf="!loading" class=" container d-flex justify-content-center h-100">
+  <div class="mt-5 h-100 shadow-lg mb-5 bg-white rounded " style="width:400px;min-height: 670px;display:grid">
+    <div class="progress" style="height: 7px; border-bottom-left-radius: 0; border-bottom-right-radius: 0;">
+      <div class="progress-bar" role="progressbar" [style.width]="progressValue + '%'" attr.aria-valuenow="{{progressValue}}" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    <div class="text-center m-5 " *ngIf="iteration==0">
+      <div class="row">
+        <div class="col-sm">
+          <p class="h3 mt-5">Welcome to ISI fitness !</p>
+          <p class="h3 mt-3"> Let's personalize your fitness plan together according to your goals.</p>
+        </div>
+        <div >
+          <div >
+            <button class=" mt-5 btn btn-primary btn-lg" (click)="continue()"> Continue </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="iteration==1">
+      <div class="text-center justify-content-center m-5">
+        <p class="h3 mb-4 mt-5">What is your name ?</p>
+        <p>
+          We are happy to have you among us.
+
+          Let’s get to know you better.</p>
+        <div class="form-row mb-4">
+          <div class="col">
+            <input type="text" id="FullName" class="form-control text-center" placeholder="full name"> 
+          </div>
+
+        </div>
+        <button type="button" class="btn btn-outline-primary mx-2" (click)="return()">previous</button>
+        <button type="submit" class="btn btn-primary mx-2" (click)="continue()">Next</button>
+      </div>
+    </div>
+
+    <div class="m-5" *ngIf="iteration==2">
+      <div class="text-center">
+        <p class="h3 mb-4 mt-3">Thank you {{name}} !</p>
+        <p>
+          Let's focus now on your goals.</p>
+          <small>Note: you can only choose 1 of the first 3 </small>
+        <div class="form-row mb-4 justify-content-center">
+          <div class="btn-group-toggle  w-75" data-toggle="buttons">
+            <input type="radio" class="btn-check" id="gain" autocomplete="off" name="optrd1" value="1" [(ngModel)]="checked">
+            <label class="btn btn-outline-dark w-75 mt-3" for="gain">gain weight</label><br>
+
+            <input type="radio" class="btn-check" id="lose" autocomplete="off" name="optrd2" value="2" [(ngModel)]="checked">
+            <label class="btn btn-outline-dark w-75 mt-3" for="lose">lose weight</label><br>
+
+            <input type="radio" class="btn-check" id="maintain" autocomplete="off" name="optrd" value="3" [(ngModel)]="checked">
+            <label class="btn btn-outline-dark w-75 mt-3" for="maintain">maintain weight</label><br>
+          </div>
+          <div class="btn-group-toggle  w-75">
+            <input type="checkbox" class="btn-check" id="strength" autocomplete="off" name="opt1" [(ngModel)]="strength_goal">
+            <label class="btn btn-outline-dark w-75 mt-3" for="strength">improve strength</label><br>
+
+            <input type="checkbox" class="btn-check" id="flexibility" autocomplete="off" name="opt2" [(ngModel)]="flexibility_goal">
+            <label class="btn btn-outline-dark w-75 mt-3" for="flexibility">improve flexibility</label><br>
+
+            <input type="checkbox" class="btn-check" id="endurance" autocomplete="off" name="opt3" [(ngModel)]="endurance_goal">
+            <label class="btn btn-outline-dark w-75 mt-3" for="endurance">improve endurance</label><br>
+
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-outline-primary mx-2" (click)="return()">previous</button>
+        <button type="submit" class="btn btn-primary mx-2" (click)="continue()">Next</button>
+      </div>
+    </div>
+    <div class="m-5" *ngIf="iteration==3">
+      <p class="h3 text-center mt-3">We will need more aditional informations</p>
+      <p class="h6 text-center mt-3">Fill the following form</p>
+      <div class="arfizato w-75 m-auto">
+        <div>
+          <label class="h6"for="height">Height (in meters):</label>
+          <input type="number" class="form-control" id="height" name="height" step="0.01" required [(ngModel)]="height">
+        </div>
+        <div>
+          <label class="h6"for="weight">Weight (in kilograms):</label>
+          <input type="number" class="form-control" id="weight" name="weight" required [(ngModel)]="weight">
+        </div>
+        <div>
+          <label class="h6"for="age">Age:</label>
+          <input type="number" class="form-control" id="age" name="age" required [(ngModel)]="age">
+        </div>
+        <div>
+          <label class="h6"for="gender">Gender:</label>
+          <select class="form-control" id="gender" name="gender" required [(ngModel)]="gender">
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div> 
+        <div>
+          <label class="h6"for="occupation">Occupation:</label>
+          <input type="text" class="form-control" id="occupation" name="occupation" placeholder="student, employer..." required [(ngModel)]="occupation">
+        </div>
+        <div>
+          <label class="h6"for="sleep_hours">Sleep Hours:</label>
+          <input type="number" class="form-control" id="sleep_hours" name="sleep_hours" required [(ngModel)]="sleep_hours" >
+        </div>
+        <div>
+          <label class="h6"for="stress_level">Stress Level:</label>
+          <select class="form-control" id="stress_level" name="stress_level" required [(ngModel)]="stress_level" >
+            <option value="">Select Stress Level</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+        <div>
+          <label class="h6 text-nowrap"for="smoking">Smoking Status:</label>
+          <select class="form-control" id="smoking" name="smoking_state" required [(ngModel)]="smoking_state">
+            <option value="">Select Smoking Status</option>
+            <option value="non-smoker">Non-smoker</option>
+            <option value="smoker">Smoker</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-outline-primary" (click)="return()">previous</button>
+        <button type="submit" class="btn btn-primary" (click)="continue()">next</button>
+      </div>
+
+    </div>
+    <div class="m-5"*ngIf="iteration==4">
+      <p class="h3 text-center mt-3">We will also need some informations about food preferances, activity, allergies and
+        intolerances</p>
+      <div class="text-center">
+        <div class="form-group">
+          <label class="h6" for="dietType">Diet Type</label>
+          <select class="form-control" id="dietType" name="diet_type" [(ngModel)]="diet_type">
+            <option value="omnivore">Omnivore</option>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="vegan">Vegan</option>
+            <option value="pescatarian">Pescatarian</option>
+          </select>
+        </div>
+
+        <!-- Activity Level Selection -->
+        <div class="form-group">
+          <label class="h6" for="activityLevel">Activity Level</label>
+          <select class="form-control" id="activityLevel" [(ngModel)]="activity_level">
+            <option value="sedentary">Sedentary</option>
+            <option value="moderately_active">Moderately Active</option>
+            <option value="very_active">Very Active</option>
+          </select>
+        </div>
+
+        <!-- Allergies Input -->
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" id="allergiesCheck" [(ngModel)]="isAllergiesChecked"
+            name="allergiesCheck">
+          <label class="form-check-label h6" for="allergiesCheck">Allergies</label>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" id="allergiesInput" placeholder="Enter allergies"
+            [disabled]="!isAllergiesChecked" [(ngModel)]="allergies_string">
+       
+
+        <!-- Intolerances Input -->
+     
+          <input type="checkbox" class="form-check-input" id="intolerancesCheck" [(ngModel)]="isIntolerancesChecked"
+            name="intolerancesCheck">
+          <label class="form-check-label h6" for="intolerancesCheck">Intolerances</label>
+        </div>
+
+        <div class="form-group">
+          <input type="text" class="form-control" id="intolerancesInput" placeholder="Enter intolerances"
+            [disabled]="!isIntolerancesChecked" [(ngModel)]="intolerances_string">
+        </div>
+
+        <button type="button" class="btn btn-outline-primary mx-2" (click)="return()">previous</button>
+        <button type="button" class="btn btn-primary mx-2" (click)="continue()">Next</button>
+      </div>
+    </div>
+
+    <div class="m-5" *ngIf="iteration==5">
+      <div class="text-center p">
+        <p class="h3 mb-4 mt-5">Tell us about you health</p>
+          <!-- Current Physical Health -->
+          <div class="form-group">
+              <label for="currentPhysicalHealth">Current Physical Health</label>
+              <select class="form-control" id="currentPhysicalHealth" [(ngModel)]="current_physical_health">
+                  <option>Good</option>
+                  <option>Fair</option>
+                  <option>Poor</option>
+              </select>
+          </div>
+
+          <!-- Chronic Conditions -->
+          <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="chronicConditionsCheck" [(ngModel)]="isChronicConditionsChecked"
+              name="chronicConditionsCheck">
+            <label class="form-check-label h6" for="chronicConditionsCheck">do you have chronic Conditions ?</label>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" id="chronicInput" placeholder="Enter chronicConditions"
+              [disabled]="!isChronicConditionsChecked" [(ngModel)]="chronic_conditions_string" >
+          </div>
+
+          <!-- Recent Surgeries or Injuries -->
+          <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="recentSurgeriesCheck" [(ngModel)]="isSurgeriesChecked"
+              name="recentSurgeriesCheck">
+            <label class="form-check-label h6" for="recentSurgeriesCheck">Had you Recent Surgeries or Injuries ?</label>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" id="recentSurgeries" placeholder="Enter Recent Surgeries or Injuries"
+              [disabled]="!isSurgeriesChecked" [(ngModel)]="surgeries_string">
+          </div>
+          <!-- Medications -->
+          <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="medicationsCheck" [(ngModel)]="isMedicationsChecked"
+              name="medicationsCheck">
+            <label class="form-check-label h6" for="medicationsCheck">Do you take medicaments ?</label>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" id="medications" placeholder="Enter medications"
+              [disabled]="!isMedicationsChecked" [(ngModel)]="medications_string">
+          </div>
+
+        <button type="button" class="btn btn-outline-primary mx-2" (click)="return()">previous</button>
+        <button type="button" class="btn btn-primary mx-2" (click)="sendData()">Get plan</button>
+      </div>
+    </div>
+  </div>
+
+</div>
