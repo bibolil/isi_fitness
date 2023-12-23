@@ -437,7 +437,7 @@ def bard_output(recommandation):
     Bard_query=""
     for i in range(len(recommandation)):
         Bard_query+=str(recommandation[i])+"\n"
-    token="egiNpu4ULVHuyLQEnFCxWmCZ9xcc4qd8REMfwjdb2fAUY93qv0W6PX_UVAtc5jLDBxjhbw."
+    token="xxxxxxxxxxxxx"
     try:
         bard = Bard(token=token)
     except Exception as e:
