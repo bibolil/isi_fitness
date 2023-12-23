@@ -477,9 +477,8 @@ def api():
     activity_level=request.json['activity_level']
 
     engine=expert_system_init()
-    expert_systeme_output=(engine,height,weight,age,gender,occupation,sleep_hours,stress_level,chronic_conditions,recent_surgeries_or_injuries,medications,current_physical_health,allergies,intolerances,weight_management,endurance_goal,flexibility_goal,strength_goal,smoking)
-
-    return {"response":bard_output(expert_systeme_output)}
+    userAttributes=UserAttributes(engine,height,weight,age,gender,occupation,sleep_hours,stress_level,chronic_conditions,recent_surgeries_or_injuries,medications,current_physical_health,allergies,intolerances,weight_management,endurance_goal,flexibility_goal,strength_goal,smoking)
+    return {"response":bard_output(expert_systeme_output(userAttributes))}
  
 
 
