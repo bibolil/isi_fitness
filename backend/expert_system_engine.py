@@ -276,7 +276,7 @@ class FitnessExpertSystem(KnowledgeEngine):
     @Rule(AND(Lifestyle(activity_level=W('activity_level'), 
                        stress_level=W('stress_level')),
               DietaryPreferences(diet_type=W('diet_type'),allergies=MATCH.allergies, intolerances=MATCH.intolerances)))
-    def combined_recommendation(self, activity_level, exercise_freq, stress_level, diet_type):
+    def combined_recommendation(self, activity_level, stress_level, diet_type):
         # Determine the training plan
         if activity_level == 'sedentary':
             training_plan = 'Start with light exercises like walking or yoga.'
@@ -383,11 +383,10 @@ class UserAttributes:
         self.diet_type = diet_type
 
 
-def expert_systeme_output(userAttributes):
+def expert_systeme_output(engine,userAttributes):
     bmi = calculate_bmi(userAttributes.height, userAttributes.weight)
     bodyfat= calculate_body_fat(userAttributes.height, userAttributes.weight, userAttributes.age, userAttributes.gender)
-    engine.recommandation.append("Person physique: height : "+str(userAttributes.height)+ " weight :"+str(userAttributes.weight)+" gender: "+str(userAttributes.gender))
-    
+   
     #declaring variables
     engine = userAttributes.engine
     height = userAttributes.height
@@ -411,9 +410,10 @@ def expert_systeme_output(userAttributes):
     activity_level = userAttributes.activity_level
     diet_type = userAttributes.diet_type
 
+    engine.recommandation.append("Person physique: height : "+str(userAttributes.height)+ " weight :"+str(userAttributes.weight)+" gender: "+str(userAttributes.gender))
     #Declaring personalinfo
     engine.declare(PersonalInfo(age=age, gender=gender, occupation=occupation, 
-                                    sleep_hours=sleep_hours, stress_level=stress_level, 
+                                    sleep_hours=float(sleep_hours), stress_level=stress_level, 
                                     ))
     # Declaring phyiscal attributes
     engine.declare(PhysicalAttributes(height=height, weight=weight,bmi=bmi,body_fat_percentage=bodyfat))
@@ -437,7 +437,7 @@ def bard_output(recommandation):
     Bard_query=""
     for i in range(len(recommandation)):
         Bard_query+=str(recommandation[i])+"\n"
-    token="xxxxxxxxxxxxx"
+    token="xxxxxxxxxxx"
     try:
         bard = Bard(token=token)
     except Exception as e:
@@ -477,8 +477,9 @@ def api():
     activity_level=request.json['activity_level']
 
     engine=expert_system_init()
-    userAttributes=UserAttributes(engine,height,weight,age,gender,occupation,sleep_hours,stress_level,chronic_conditions,recent_surgeries_or_injuries,medications,current_physical_health,allergies,intolerances,weight_management,endurance_goal,flexibility_goal,strength_goal,smoking)
-    return {"response":bard_output(expert_systeme_output(userAttributes))}
+    userAttributes=UserAttributes(engine,height,weight,age,gender,occupation,sleep_hours,stress_level,chronic_conditions,recent_surgeries_or_injuries,medications,current_physical_health,allergies,intolerances,weight_management,endurance_goal,flexibility_goal,strength_goal,smoking,diet_type,activity_level)
+    print(expert_systeme_output(engine,userAttributes))
+    return {"response":bard_output(expert_systeme_output(engine,userAttributes))}
  
 
 

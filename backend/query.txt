@@ -16,4 +16,5 @@ Mid-Morning Snack:
 Lunch:
 Afternoon Snack:
 Dinner:
-Evening Snack (if needed)
+Evening Snack (if needed):
+Summarize and create a diet plan with the nutritions values calculation and training plan for one person while prioritizing the health considerations
