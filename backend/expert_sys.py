@@ -1,35 +1,6 @@
 from experta import *
-from bardapi import Bard
-import bardapi
-from flask import *
-from flask_cors import CORS
+import helper_functions 
 
-#flask init
-app = Flask(__name__)
-app.config['TEMPLATES_AUTO_RELOAD'] = True
-CORS(app)
-
-#Helper functions
-
-def calculate_bmi(height, weight):
-    """ Calculate BMI based on height and weight if not provided. """
-    if height > 0:
-        return weight / (height ** 2)
-    else:
-        return None
-
-def calculate_body_fat(height, weight, age, gender):
-    # Calculate BMI
-    bmi = weight / (height ** 2)
-    
-    if gender.lower() == 'male':
-        body_fat_percentage = (1.20 * bmi) + (0.23 * age) - 16.2
-    elif gender.lower() == 'female':
-        body_fat_percentage = (1.20 * bmi) + (0.23 * age) - 5.4
-    else:
-        return "Invalid gender. Please enter 'male' or 'female'."
-
-    return body_fat_percentage
 #facts classes
 class PersonalInfo(Fact):
     """
@@ -348,39 +319,10 @@ class FitnessExpertSystem(KnowledgeEngine):
         self.recommandation.append("Training Plan: Avoid overtraining. Ensure adequate rest and recovery.")
         self.recommandation.append("Diet Plan: Include foods that promote sleep, like cherries, milk, and almonds.")
 
-
 def expert_system_init():
     engine = FitnessExpertSystem()
     engine.reset()  
     return engine
-
-class UserAttributes:
-    def __init__(self, engine, height, weight, age, gender, occupation, sleep_hours, stress_level, chronic_conditions,
-                 recent_surgeries_or_injuries, medications, current_physical_health, allergies, intolerances,
-                 weight_management, endurance_goal, flexibility_goal, strength_goal, smoking, activity_level,
-                 diet_type):
-
-        self.engine = engine
-        self.height = height
-        self.weight = weight
-        self.age = age
-        self.gender = gender
-        self.occupation = occupation
-        self.sleep_hours = sleep_hours
-        self.stress_level = stress_level
-        self.chronic_conditions = chronic_conditions
-        self.recent_surgeries_or_injuries = recent_surgeries_or_injuries
-        self.medications = medications
-        self.current_physical_health = current_physical_health
-        self.allergies = allergies
-        self.intolerances = intolerances
-        self.weight_management = weight_management
-        self.endurance_goal = endurance_goal
-        self.flexibility_goal = flexibility_goal
-        self.strength_goal = strength_goal
-        self.smoking = smoking
-        self.activity_level = activity_level
-        self.diet_type = diet_type
 
 
 def expert_systeme_output(engine,userAttributes):
@@ -428,60 +370,3 @@ def expert_systeme_output(engine,userAttributes):
     engine.declare(DietaryPreferences(diet_type=diet_type,allergies=allergies,intolerances=intolerances))
     engine.run()
     return engine.recommandation
-    
-    
-def bard_output(recommandation):    
-    file_path = 'query.txt'  
-    with open(file_path, 'r') as file:
-        query_header = file.read()
-    Bard_query=""
-    for i in range(len(recommandation)):
-        Bard_query+=str(recommandation[i])+"\n"
-    token="xxxxxxxxxxx"
-    try:
-        bard = Bard(token=token)
-    except Exception as e:
-        print(e)
-        return "Error: Token expired"
-    input_text=query_header+"\n"+Bard_query
-    # Send an API request and get a response.
-    try:
-        response = bardapi.core.Bard(token).get_answer(input_text)
-    except Exception as e:
-        print(e)
-        return "Error: Token expired"
-    # Print the response.
-    return response["content"]
-
-@app.route('/api', methods=['POST'])
-def api():
-    height = float(request.json['height'])  # in meters
-    weight = float(request.json['weight'])    # in kilograms
-    age = int(request.json['age'])
-    gender = request.json['gender']
-    occupation=request.json['occupation']
-    sleep_hours=request.json['sleep_hours']
-    stress_level=request.json['stress_level']
-    chronic_conditions=request.json['chronic_conditions']
-    recent_surgeries_or_injuries=request.json['recent_surgeries_or_injuries']
-    medications=request.json['medications']
-    current_physical_health=request.json['current_physical_health']
-    allergies=request.json['allergies']
-    intolerances=request.json['intolerances']
-    weight_management=request.json['weight_management']
-    endurance_goal=request.json['endurance_goal']
-    flexibility_goal=request.json['flexibility_goal']
-    strength_goal=request.json['strength_goal']
-    smoking=request.json['smoking']
-    diet_type=request.json['diet_type']
-    activity_level=request.json['activity_level']
-
-    engine=expert_system_init()
-    userAttributes=UserAttributes(engine,height,weight,age,gender,occupation,sleep_hours,stress_level,chronic_conditions,recent_surgeries_or_injuries,medications,current_physical_health,allergies,intolerances,weight_management,endurance_goal,flexibility_goal,strength_goal,smoking,diet_type,activity_level)
-    print(expert_systeme_output(engine,userAttributes))
-    return {"response":bard_output(expert_systeme_output(engine,userAttributes))}
- 
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
